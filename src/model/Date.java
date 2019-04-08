@@ -5,7 +5,7 @@ import java.util.Random;
 /**
  * This class is meant to be used to represent dates in each flight. As these dates are generated completely by random, some inexact dates such as February 31th may be generated. 
  * @author Jhon Edward Mora - Universidad ICESI - A00355710
- *
+ * @version 1.0 - April/2019
  */
 public class Date implements Comparable<Date> {
 	
@@ -48,6 +48,27 @@ public class Date implements Comparable<Date> {
 		year = rnd.nextInt(2) + 2019;
 		hour = rnd.nextInt(23);
 		minutes = rnd.nextInt(59);
+		if(hour < 11 || hour == 11 && minutes <= 59) {
+			dayMoment = AM;
+		}else {
+			dayMoment = PM;
+		}
+	}
+	
+	/**
+	 * For testing purposes. Creates a date using the data received as parameters.
+	 * @param d The date's day.
+	 * @param m The date's month.
+	 * @param y The date's year.
+	 * @param h The date's hour.
+	 * @param mn The date's minutes.
+	 */
+	public Date(int d, int m, int y, int h, int mn) {
+		day = d;
+		month = m;
+		year = y;
+		hour = h;
+		minutes = mn;
 		if(hour < 11 || hour == 11 && minutes <= 59) {
 			dayMoment = AM;
 		}else {
