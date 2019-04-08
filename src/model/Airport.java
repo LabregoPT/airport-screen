@@ -42,6 +42,14 @@ public class Airport{
 	}
 	
 	/**
+	 * For testing purposes only.
+	 * @param fs The list to be set.
+	 */
+	public void setFlights(List<Flight> fs) {
+		flights = fs;
+	}
+	
+	/**
 	 * Generates an specified number of flights completely by random.
 	 * @param flightsNum The number of flights to be generated.
 	 * @throws IOException When there's an error reading the program's files.
