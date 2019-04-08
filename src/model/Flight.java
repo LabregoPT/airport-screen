@@ -120,7 +120,7 @@ public class Flight implements Comparable<Flight>{
 	 * @return the value 0 if the argument's Flight Number (FN) is equal to this FN; a value less than 0 if this FN is lexicographically less than the argument's FN; and a value greater than 0 if this FN is lexicographically greater than the argument's FN.
 	 */
 	public int compareToFN(Flight f) {
-		return airline.compareTo(f.getAirline());
+		return flightNumber.compareTo(f.getFlightNumber());
 	}
 	
 	/**
