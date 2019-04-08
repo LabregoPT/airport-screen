@@ -77,6 +77,27 @@ public class Date implements Comparable<Date> {
 	}
 	
 	/**
+	 * Generates a new date given a String holding a formated date.
+	 * @param s String representing a formated date.
+	 * @throws NumberFormatException when the given String is not a formated date.
+	 */
+	public Date(String s) throws NumberFormatException{
+		s.trim();
+		String[] parts = s.split("-");
+		year = Integer.parseInt(parts[0]);
+		month = Integer.parseInt(parts[1]);
+		day = Integer.parseInt(parts[2]);
+		String[] hourParts = parts[3].split(":");
+		hour = Integer.parseInt(hourParts[0]);
+		minutes = Integer.parseInt(hourParts[1]);
+		if(hour < 11 || hour == 11 && minutes <= 59) {
+			dayMoment = AM;
+		}else {
+			dayMoment = PM;
+		}
+	}
+	
+	/**
 	 * Returns the date in format YYYY-MM-DD
 	 * @return The date in the specified format.
 	 */
@@ -96,7 +117,7 @@ public class Date implements Comparable<Date> {
 		}else {
 			normalHour = hour-12;
 		}
-		String msg = String.format("%02d:%02d %s", normalHour, minutes, dayMoment);
+		String msg = String.format("%02d:%02d-%s", normalHour, minutes, dayMoment);
 		return msg;
 	}
 	
@@ -183,5 +204,8 @@ public class Date implements Comparable<Date> {
 		return minutes;
 	}
 
+	public String toString() {
+		return getDate() + " - " + getTime();
+	}
 	
 }//End of class

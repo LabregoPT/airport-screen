@@ -43,6 +43,14 @@ public class Flight implements Comparable<Flight>{
 		date = new Date();
 	}
 
+	/**
+	 * Returns the date of this flight.
+	 * @return The date of this flight.
+	 */
+	public String getTime() {
+		return date.getDate();
+	}
+	
 	/** Returns the String containing the name of this flight's airline.
 	 * @return the airline
 	 */
