@@ -82,15 +82,14 @@ public class Date implements Comparable<Date> {
 	 * @throws NumberFormatException when the given String is not a formated date.
 	 */
 	public Date(String s) throws NumberFormatException{
-		s.trim();
 		String[] parts = s.split("-");
-		year = Integer.parseInt(parts[0]);
-		month = Integer.parseInt(parts[1]);
-		day = Integer.parseInt(parts[2]);
+		year = Integer.parseInt(parts[0].trim());
+		month = Integer.parseInt(parts[1].trim());
+		day = Integer.parseInt(parts[2].trim());
 		String[] hourParts = parts[3].split(":");
-		hour = Integer.parseInt(hourParts[0]);
-		minutes = Integer.parseInt(hourParts[1]);
-		if(hour < 11 || hour == 11 && minutes <= 59) {
+		hour = Integer.parseInt(hourParts[0].trim());
+		minutes = Integer.parseInt(hourParts[1].trim());
+		if(parts[4].equals(AM)) {
 			dayMoment = AM;
 		}else {
 			dayMoment = PM;

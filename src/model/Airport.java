@@ -381,7 +381,7 @@ public class Airport{
 		List<Flight> found = new ArrayList<Flight>();
 		Comparator<Flight> searcher = new Comparator<Flight>() {
 			public int compare(Flight o1, Flight o2) {
-				return o1.compareToDestination(o2);
+				return o1.compareToBG(o2);
 			}
 		};
 		Flight searched = new Flight("", "", "", bg);
