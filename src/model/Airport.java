@@ -183,16 +183,19 @@ public class Airport{
 	 * Sorts the list of flights by airline using an insertion sort algorithm.
 	 */
 	public void sortAirline() {
-		int length = flights.size();
-		for (int i = 1; i < length; ++i) {
-			Flight key = flights.get(i);
-			int j = i - 1;
-			Flight current = flights.get(j);
-			while (j >= 0 && current.compareTo(key)>0) { 
-				flights.set(j+1, current);
-				j--;
+		int size = flights.size();
+		for (int i = 0; i<size; i++) {
+			Flight toInsert = flights.get(i);
+			boolean ended = false;
+			for(int j = i; j>0 && !ended; j--) {
+				Flight current = flights.get(j-1);
+				if(current.compareToAirline(toInsert) > 0) {
+					flights.set(j, current);
+					flights.set(j-1, toInsert);
+				}else {
+					ended = true;
+				}
 			}
-			flights.set(j+1, key);
 		}
 	}
 	
@@ -222,7 +225,7 @@ public class Airport{
 	public void sortFN() {
 		flights.sort(new Comparator<Flight>() {
 			public int compare(Flight o1, Flight o2) {
-				return o2.compareToFN(o1);
+				return o1.compareToFN(o2);
 			}
 			
 		});

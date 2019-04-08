@@ -1,6 +1,7 @@
 package ui;
 
 import java.io.IOException;
+import java.util.*;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -9,7 +10,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.layout.GridPane;
-import model.Airport;
+import model.*;
 
 /**
  * Controller class for the user GUI
@@ -19,7 +20,7 @@ import model.Airport;
 public class Controller {
 	
 	/**Number of items per page in this simulation.*/
-	private int ITEMS_PER_PAGE = 10;
+	private static final int ITEMS_PER_PAGE = 10;
 	
 	/**Relation with model package.*/
 	private Airport airport;
@@ -47,136 +48,48 @@ public class Controller {
      */
     @FXML
     private TextField genTF;
+    
+    /**
+     * Container to keep all the Labels used in each page.
+     */
+    private Label[][] cells;
 
     @FXML
     void generate(ActionEvent event) {
-    	try {
-			int number = Integer.parseInt(genTF.getText());
-			airport.generateFlights(number);
-			numberOfPages = airport.getFlights().size()%ITEMS_PER_PAGE;
-			currentPage = 0;
-			
-			containerGrid.add(new Label(), 0, 0, 6, 11);
-			if(number > ITEMS_PER_PAGE) {
-				for(int i = 0; i<ITEMS_PER_PAGE; i++) { 
-					String airline = airport.getFlights().get(i).getAirline();
-					String flightNumber = airport.getFlights().get(i).getFlightNumber();
-					String destination = airport.getFlights().get(i).getDestination();
-					String boardingGate = airport.getFlights().get(i).getBoardingGate() + "";
-					String date = airport.getFlights().get(i).getDate().getDate();
-					String time = airport.getFlights().get(i).getDate().getTime();
-				
-					Label al = new Label(airline);
-					Label fn = new Label (flightNumber);
-					Label ds = new Label (destination);
-					Label bg = new Label (boardingGate);
-					Label dt = new Label (date);
-					Label tm = new Label (time);
-					containerGrid.add(al, 0, i+1);
-					containerGrid.add(fn, 1, i+1);
-					containerGrid.add(ds, 2, i+1);
-					containerGrid.add(bg, 3, i+1);
-					containerGrid.add(dt, 4, i+1);
-					containerGrid.add(tm, 5, i+1);
-				}
-			}else {
-				for(int i = 0; i<number; i++) { 
-					String airline = airport.getFlights().get(i).getAirline();
-					String flightNumber = airport.getFlights().get(i).getFlightNumber();
-					String destination = airport.getFlights().get(i).getDestination();
-					String boardingGate = airport.getFlights().get(i).getBoardingGate() + "";
-					String date = airport.getFlights().get(i).getDate().getDate();
-					String time = airport.getFlights().get(i).getDate().getTime();
-				
-					Label al = new Label(airline);
-					Label fn = new Label (flightNumber);
-					Label ds = new Label (destination);
-					Label bg = new Label (boardingGate);
-					Label dt = new Label (date);
-					Label tm = new Label (time);
-					containerGrid.add(al, 0, i+1);
-					containerGrid.add(fn, 1, i+1);
-					containerGrid.add(ds, 2, i+1);
-					containerGrid.add(bg, 3, i+1);
-					containerGrid.add(dt, 4, i+1);
-					containerGrid.add(tm, 5, i+1);
-				}
-			}
+    	try{
+    		airport = new Airport();
+    		int gens = Integer.parseInt(genTF.getText());
+    		airport.generateFlights(gens);
+    		numberOfPages = gens/ITEMS_PER_PAGE;
+    		currentPage = 0;
+    		List<Flight> flights = airport.getFlights();
+    		updateContainer(flights);
     	}catch(IOException e) {
-    		Alert t = new Alert(AlertType.ERROR, e.getLocalizedMessage());
-			t.setContentText("Error: There are some missing files.");
-			t.show();
+    		Alert errorMessage = new Alert(AlertType.ERROR);
+    		errorMessage.setContentText("There was an error loading the files.");
+    		errorMessage.show();
     	}catch(NumberFormatException e) {
-    		Alert t = new Alert(AlertType.ERROR, e.getLocalizedMessage());
-			t.setContentText("Error: Please write only numbers.");
-			t.show();
+    		Alert errorMessage = new Alert(AlertType.ERROR);
+    		errorMessage.setContentText("Please write only numbers.");
+    		errorMessage.show();
     	}
     }
     
     @FXML
     void nextPage(ActionEvent event) {
-    	if(!airport.getFlights().isEmpty()) {
-    		if(currentPage > numberOfPages) {
-    			currentPage ++;
-    		}
-    		containerGrid.add(new Label(), 0, 0, 6, 11);
-    		int initIndex = currentPage * ITEMS_PER_PAGE;
-			for(int i = 0; i<ITEMS_PER_PAGE; i++) { 
-				String airline = airport.getFlights().get(initIndex).getAirline();
-				String flightNumber = airport.getFlights().get(initIndex).getFlightNumber();
-				String destination = airport.getFlights().get(initIndex).getDestination();
-				String boardingGate = airport.getFlights().get(initIndex).getBoardingGate() + "";
-				String date = airport.getFlights().get(initIndex).getDate().getDate();
-				String time = airport.getFlights().get(initIndex).getDate().getTime();
-				initIndex++;
-				
-				Label al = new Label(airline);
-				Label fn = new Label (flightNumber);
-				Label ds = new Label (destination);
-				Label bg = new Label (boardingGate);
-				Label dt = new Label (date);
-				Label tm = new Label (time);
-				containerGrid.add(al, 0, i+1);
-				containerGrid.add(fn, 1, i+1);
-				containerGrid.add(ds, 2, i+1);
-				containerGrid.add(bg, 3, i+1);
-				containerGrid.add(dt, 4, i+1);
-				containerGrid.add(tm, 5, i+1);
-			}
+    	currentPage++;
+    	int initIndex = (currentPage*ITEMS_PER_PAGE);
+    	int finalIndex = 0;
+    	if(currentPage != numberOfPages) {
+    		finalIndex = initIndex += 10;
+    	}else {
+    		finalIndex = airport.getFlights().size()-initIndex;
     	}
     }
 
     @FXML
     void prevPage(ActionEvent event) {
-    	if(!airport.getFlights().isEmpty()) {
-    		if(currentPage > 0) {
-    			currentPage --;
-    		}
-    		containerGrid.add(new Label(), 0, 0, 6, 11);
-    		int initIndex = currentPage * ITEMS_PER_PAGE;
-			for(int i = 0; i<ITEMS_PER_PAGE; i++) { 
-				initIndex += i;
-				String airline = airport.getFlights().get(initIndex).getAirline();
-				String flightNumber = airport.getFlights().get(initIndex).getFlightNumber();
-				String destination = airport.getFlights().get(initIndex).getDestination();
-				String boardingGate = airport.getFlights().get(initIndex).getBoardingGate() + "";
-				String date = airport.getFlights().get(initIndex).getDate().getDate();
-				String time = airport.getFlights().get(initIndex).getDate().getTime();
-				
-				Label al = new Label(airline);
-				Label fn = new Label (flightNumber);
-				Label ds = new Label (destination);
-				Label bg = new Label (boardingGate);
-				Label dt = new Label (date);
-				Label tm = new Label (time);
-				containerGrid.add(al, 0, i+1);
-				containerGrid.add(fn, 1, i+1);
-				containerGrid.add(ds, 2, i+1);
-				containerGrid.add(bg, 3, i+1);
-				containerGrid.add(dt, 4, i+1);
-				containerGrid.add(tm, 5, i+1);
-			}
-    	}
+    
     }
 
     @FXML
@@ -206,31 +119,77 @@ public class Controller {
 
     @FXML
     void sortAirline(ActionEvent event) {
-
+    	airport.setSortingType(Sortings.AIRLINE);
+    	airport.sort();
+    	updateContainer(airport.getFlights());
     }
 
     @FXML
     void sortBoardingGate(ActionEvent event) {
-
+    	airport.setSortingType(Sortings.BOARDING_GATE);
+    	airport.sort();
+    	updateContainer(airport.getFlights());
     }
 
     @FXML
     void sortDestination(ActionEvent event) {
-
+    	airport.setSortingType(Sortings.DESTINATION);
+    	airport.sort();
+    	updateContainer(airport.getFlights());
     }
 
     @FXML
     void sortFlightNumber(ActionEvent event) {
-
+    	airport.setSortingType(Sortings.FLIGHT_NUMBER);
+    	airport.sort();
+    	updateContainer(airport.getFlights());
     }
 
     @FXML
     void sortTime(ActionEvent event) {
-
+    	airport.setSortingType(Sortings.TIME);
+    	airport.sort();
+    	updateContainer(airport.getFlights());
     }
     
+    /**
+     * Initializes all the invariant fields necessary to handle the program's functions.
+     */
     @FXML
     void initialize() {
     	airport = new Airport();
+    	cells = new Label[10][6];
+    	for (int i = 0; i < cells.length; i++) {
+			for (int j = 0; j < cells[0].length; j++) {
+				cells[i][j] = new Label();
+				if(i!= 0) {
+				containerGrid.add(cells[i][j], j,i);
+				}
+			}
+		}
+    	
+    }
+    
+    void updateContainer(List<Flight> flights) {
+    	int totalFlights = flights.size();
+    	if(totalFlights<ITEMS_PER_PAGE) {
+    		for(int i = 0; i<totalFlights; i++) {
+    			cells[i][0].setText(flights.get(i).getAirline());
+    			cells[i][1].setText(flights.get(i).getFlightNumber());
+    			cells[i][2].setText(flights.get(i).getDestination());
+    			cells[i][3].setText(flights.get(i).getBoardingGate() + "");
+    			cells[i][4].setText(flights.get(i).getDate().getDate());
+    			cells[i][5].setText(flights.get(i).getDate().getTime());
+    		}
+    	}else {
+    		for(int i = 0; i<ITEMS_PER_PAGE; i++) {
+    			cells[i][0].setText(flights.get(i).getAirline());
+    			cells[i][1].setText(flights.get(i).getFlightNumber());
+    			cells[i][2].setText(flights.get(i).getDestination());
+    			cells[i][3].setText(flights.get(i).getBoardingGate() + "");
+    			cells[i][4].setText(flights.get(i).getDate().getDate());
+    			cells[i][5].setText(flights.get(i).getDate().getTime());
+    		}
+    	}
     }
 }
