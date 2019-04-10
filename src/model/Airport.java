@@ -58,11 +58,11 @@ public class Airport{
 		
 			Random rnd = new Random();
 			int i = 0;
-			while(i<flightsNum+1) {
+			while(i<flightsNum) {
 				String airline = readAirline(rnd.nextInt(47));
 				String uniqueNumber = assignNumber(airline, i);
-				String destination = readDestination(rnd.nextInt(101));
-				Flight f = new Flight(airline, uniqueNumber, destination, rnd.nextInt(11));
+				String destination = readDestination(rnd.nextInt(100));
+				Flight f = new Flight(airline, uniqueNumber, destination, 1+rnd.nextInt(10));
 				flights.add(f);
 				i++;
 			
@@ -98,7 +98,7 @@ public class Airport{
 		File f = new File(DESTINATIONS_PATH);
 		BufferedReader br = new BufferedReader(new FileReader(f));
 		int i = 0;
-		String msg = "";
+		String msg = br.readLine();
 		while(i < lineNumber) {
 			msg = br.readLine();
 			i++;

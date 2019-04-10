@@ -60,8 +60,9 @@ public class Controller {
     		airport = new Airport();
     		int gens = Integer.parseInt(genTF.getText());
     		airport.generateFlights(gens);
-    		numberOfPages = gens/ITEMS_PER_PAGE;
+    		numberOfPages = (gens/ITEMS_PER_PAGE);
     		currentPage = 0;
+    		airport.sort();
     		List<Flight> flights = airport.getFlights();
     		updateContainer(flights);
     	}catch(IOException e) {
@@ -77,19 +78,34 @@ public class Controller {
     
     @FXML
     void nextPage(ActionEvent event) {
-    	currentPage++;
-    	int initIndex = (currentPage*ITEMS_PER_PAGE);
-    	int finalIndex = 0;
-    	if(currentPage != numberOfPages) {
-    		finalIndex = initIndex += 10;
-    	}else {
-    		finalIndex = airport.getFlights().size()-initIndex;
+    	if(currentPage < numberOfPages-1) {
+    		currentPage++;
     	}
+    	int initIndex = currentPage*ITEMS_PER_PAGE;
+    	int finalIndex = 0;
+    	if(currentPage < numberOfPages) {
+    		finalIndex = initIndex+ITEMS_PER_PAGE;
+    	}else {
+    		finalIndex = airport.getFlights().size();
+    	}
+    	List<Flight> split = airport.getFlights().subList(initIndex, finalIndex);
+    	updateContainer(split);
     }
 
     @FXML
     void prevPage(ActionEvent event) {
-    
+    	if(currentPage > 0) {
+    		currentPage--;
+    	}
+    	int initIndex = currentPage*ITEMS_PER_PAGE;
+    	int finalIndex = 0;
+    	if(currentPage < numberOfPages) {
+    		finalIndex = initIndex+ITEMS_PER_PAGE;
+    	}else {
+    		finalIndex = airport.getFlights().size();
+    	}
+    	List<Flight> split = airport.getFlights().subList(initIndex, finalIndex);
+    	updateContainer(split);
     }
 
     @FXML
@@ -171,6 +187,7 @@ public class Controller {
     }
     
     void updateContainer(List<Flight> flights) {
+    	clearContainer();
     	int totalFlights = flights.size();
     	if(totalFlights<ITEMS_PER_PAGE) {
     		for(int i = 0; i<totalFlights; i++) {
@@ -190,6 +207,17 @@ public class Controller {
     			cells[i][4].setText(flights.get(i).getDate().getDate());
     			cells[i][5].setText(flights.get(i).getDate().getTime());
     		}
+    	}
+    }
+    
+    void clearContainer() {
+    	for(int i = 0; i<ITEMS_PER_PAGE; i++) {
+    		cells[i][0].setText("");
+			cells[i][1].setText("");
+			cells[i][2].setText("");
+			cells[i][3].setText("");
+			cells[i][4].setText("");
+			cells[i][5].setText("");
     	}
     }
 }
