@@ -46,7 +46,7 @@ public class Date implements Comparable<Date> {
 		day = rnd.nextInt(30)+1; 
 		month = rnd.nextInt(11)+1;
 		year = rnd.nextInt(2) + 2019;
-		hour = rnd.nextInt(23);
+		hour = rnd.nextInt(24);
 		minutes = rnd.nextInt(59);
 		if(hour < 11 || hour == 11 && minutes <= 59) {
 			dayMoment = AM;
@@ -81,19 +81,29 @@ public class Date implements Comparable<Date> {
 	 * @param s String representing a formated date.
 	 * @throws NumberFormatException when the given String is not a formated date.
 	 */
-	public Date(String s) throws NumberFormatException{
+	public Date(String s) throws NumberFormatException, IndexOutOfBoundsException{
+		System.out.println("Fecha que se intenta generar u.u " + s);
 		String[] parts = s.split("-");
+		System.out.println("Separado por -");
 		year = Integer.parseInt(parts[0].trim());
+		System.out.println("Parseado el anho");
 		month = Integer.parseInt(parts[1].trim());
+		System.out.println("Parseado el mes");
 		day = Integer.parseInt(parts[2].trim());
+		System.out.println("parseado el dia");
 		String[] hourParts = parts[3].split(":");
+		System.out.println("separada" + parts[3] + "por :");
 		hour = Integer.parseInt(hourParts[0].trim());
+		System.out.println("parseada hora");
 		minutes = Integer.parseInt(hourParts[1].trim());
+		System.out.println("parseado minutos");
 		if(parts[4].equals(AM)) {
 			dayMoment = AM;
 		}else {
 			dayMoment = PM;
 		}
+		System.out.println("anhadido el tiempo");
+		System.out.println("Creado Date");
 	}
 	
 	/**
@@ -114,9 +124,9 @@ public class Date implements Comparable<Date> {
 		if(hour < 11 || hour == 11 && minutes <= 59) {
 			normalHour = hour;
 		}else {
-			normalHour = hour-12;
+			normalHour = hour-11;
 		}
-		String msg = String.format("%02d:%02d-%s", normalHour, minutes, dayMoment);
+		String msg = String.format("%02d:%02d %s", normalHour, minutes, dayMoment);
 		return msg;
 	}
 	

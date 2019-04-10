@@ -55,7 +55,6 @@ public class Airport{
 	 * @throws IOException When there's an error reading the program's files.
 	 */
 	public void generateFlights(int flightsNum) throws IOException{
-		
 			Random rnd = new Random();
 			int i = 0;
 			while(i<flightsNum) {
@@ -67,6 +66,8 @@ public class Airport{
 				i++;
 			
 		}
+		setSortingType(Sortings.TIME);
+		sort();
 	}
 	
 	/**
@@ -155,7 +156,7 @@ public class Airport{
 		case BOARDING_GATE:
 			sortBG();
 			break;
-		default:
+		case TIME:
 			sortTime();
 			break;
 		}
@@ -165,7 +166,7 @@ public class Airport{
 	 * Sorts the list of flights by time using a bubble sort algorithm.
 	 */
 	public void sortTime() {
-		int length = flights.size();
+		int length = flights.size()-1;
 		for (int i = 0; i < length-1; i++) {
 			for (int j = 0; j < length-i-1 ; j++) {
 				Flight current = flights.get(j);
@@ -258,7 +259,7 @@ public class Airport{
 	 * @return A list of all the flights matching the searched parameter in the criteria.
 	 * @throws NumberFormatException When the searching parameter is either not a number when searching by boarding gates nor a correctly formated date when searching by flight's date.
 	 */
-	public List<Flight> search(Sortings criteria, String parameter) throws NumberFormatException{
+	public List<Flight> search(Sortings criteria, String parameter) throws NumberFormatException, IndexOutOfBoundsException{
 		List<Flight> found = null;
 		switch(criteria) {
 			case AIRLINE:
@@ -274,9 +275,11 @@ public class Airport{
 				int bg = Integer.parseInt(parameter);
 				found = searchBG(bg);
 				break;
-			default:
+			case TIME:
+				System.out.println("Fecha del primerito uwu " + flights.get(0).getDate().toString());
 				Date d = new Date(parameter);
 				found = searchTime(d);
+				System.out.println("Found");
 				break;				
 		}
 		return found;

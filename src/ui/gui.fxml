@@ -72,7 +72,7 @@
             <Label text="Destination" GridPane.columnIndex="2" />
             <Label text="Boarding Gate" GridPane.columnIndex="3" />
             <Label text="Date" GridPane.columnIndex="4" />
-            <Label text="Time" GridPane.columnIndex="5" />
+            <Label text="Hour" GridPane.columnIndex="5" />
          </children>
          <padding>
             <Insets left="8.0" right="8.0" />
@@ -81,10 +81,11 @@
       <HBox alignment="CENTER_LEFT" spacing="8.0">
          <children>
             <Button mnemonicParsing="false" onAction="#prevPage" text="Previous Page" />
+            <Label fx:id="pageLabel" text="Page 0 of 0" />
             <Button mnemonicParsing="false" onAction="#nextPage" text="Next Page" />
-            <Label fx:id="informationLabel" />
             <TextField fx:id="genTF" prefHeight="25.0" prefWidth="80.0" />
             <Button mnemonicParsing="false" onAction="#generate" text="Generate" />
+            <Label fx:id="informationLabel" />
          </children>
          <padding>
             <Insets bottom="8.0" left="8.0" />
