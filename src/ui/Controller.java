@@ -77,8 +77,12 @@ public class Controller {
     		airport.generateFlights(gens);
     		numberOfPages = (gens/ITEMS_PER_PAGE);
     		currentPage = 0;
-    		pageLabel.setText(String.format("Page %d of %d", currentPage+1,numberOfPages));
-    		List<Flight> flights = airport.getFlights().subList(currentPage, ITEMS_PER_PAGE);
+    		List<Flight> flights = airport.getFlights();
+    		if(flights.size()%10 == 0) {
+    			pageLabel.setText(String.format("Page %d of %d", currentPage+1,numberOfPages));
+    		}else {
+    			pageLabel.setText(String.format("Page %d of %d", currentPage+1,numberOfPages+1));
+    		}
     		updateContainer(flights);
     	}catch(IOException e) {
     		Alert errorMessage = new Alert(AlertType.ERROR);
@@ -97,9 +101,16 @@ public class Controller {
      */
     @FXML
     void nextPage(ActionEvent event) {
-    	if(currentPage < numberOfPages-1) {
-    		currentPage++;
-    	}
+    	if(airport.getFlights().size() % 10 == 0) {
+    		if(currentPage < numberOfPages-1) {
+    			currentPage++;
+        	}
+		}else {
+			if(currentPage < numberOfPages) {
+    			currentPage++;
+        	}
+		}
+    	
     	int initIndex = currentPage*ITEMS_PER_PAGE;
     	int finalIndex = 0;
     	if(currentPage < numberOfPages) {
@@ -107,7 +118,11 @@ public class Controller {
     	}else {
     		finalIndex = airport.getFlights().size();
     	}
-    	pageLabel.setText(String.format("Page %d of %d", currentPage+1,numberOfPages));
+    	if(airport.getFlights().size()%10 == 0) {
+			pageLabel.setText(String.format("Page %d of %d", currentPage+1,numberOfPages));
+		}else {
+			pageLabel.setText(String.format("Page %d of %d", currentPage+1,numberOfPages+1));
+		}
     	List<Flight> split = airport.getFlights().subList(initIndex, finalIndex);
     	updateContainer(split);
     }
@@ -128,7 +143,11 @@ public class Controller {
     	}else {
     		finalIndex = airport.getFlights().size();
     	}
-    	pageLabel.setText(String.format("Page %d of %d", currentPage+1,numberOfPages));
+    	if(airport.getFlights().size()%10 == 0) {
+			pageLabel.setText(String.format("Page %d of %d", currentPage+1,numberOfPages));
+		}else {
+			pageLabel.setText(String.format("Page %d of %d", currentPage+1,numberOfPages+1));
+		}
     	List<Flight> split = airport.getFlights().subList(initIndex, finalIndex);
     	updateContainer(split);
     }
@@ -289,7 +308,7 @@ public class Controller {
 			title.setText(title.getText() + "flight number.");
 			break;
 		case TIME:
-			title.setText(title.getText() + "date in YYYY-MM-AA - HH:MM - AM/PM format.");
+			title.setText(title.getText() + "date in YYYY-MM-AA HH:MM AM/PM format.");
 			break;
         }
         TextField inputTF = new TextField();
@@ -297,20 +316,20 @@ public class Controller {
         Button search = new Button("Search");
         search.setOnAction(new EventHandler<ActionEvent>() {
 			public void handle(ActionEvent arg0) {
-				//try {
+				try {
 					String msg = inputTF.getText();
 					long initTime = System.currentTimeMillis();
 					List<Flight> found = airport.search(s, msg);
 					long totalTime = System.currentTimeMillis() - initTime;
 					informationLabel.setText(totalTime + " ms were needed to search.");
 					updateContainer(found);
-				/*}catch(NumberFormatException | IndexOutOfBoundsException e) {
+				}catch(NumberFormatException | IndexOutOfBoundsException e) {
 					Alert errorMessage = new Alert(AlertType.ERROR);
-		    		errorMessage.setContentText("Please write the date in YYYY-MM-AA - HH:MM AM/PM format.");
+		    		errorMessage.setContentText("Please write the date in YYYY-MM-AA HH:MM AM/PM format.");
 		    		errorMessage.show();
 				}finally {
 					dialog.close();
-				}*/
+				}
 			}
 			
         	

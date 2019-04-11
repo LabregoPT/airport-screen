@@ -41,7 +41,7 @@ class AirportTest {
 		assertNotNull(tested, "Failed to instantiate class");
 	}
 	
-	
+	@Test
 	void test2() {
 		setUpStage4();
 		try{
@@ -92,7 +92,7 @@ class AirportTest {
 		setUpStage5();
 		found = tested.search(Sortings.FLIGHT_NUMBER, "C80192");
 		assertEquals(1, found.size(), "Found more than 1 flight.");
-		assertTrue(found.get(0).equals(tested.getFlights().get(1)), "Flight found is not the correct one.");
+		assertTrue(found.get(0).equals(tested.getFlights().get(2)), "Flight found is not the correct one.");
 		
 		setUpStage5();
 		found = tested.search(Sortings.FLIGHT_NUMBER, "D80912");
@@ -106,39 +106,5 @@ class AirportTest {
 		setUpStage5();
 		found = tested.search(Sortings.BOARDING_GATE, "5");
 		assertTrue(found.isEmpty(), "Found incorrect values.");
-		
-		List<Flight> preSort = tested.getFlights();
-		
-		setUpStage5();
-		tested.setSortingType(Sortings.AIRLINE);
-		tested.sort();
-		assertEquals(preSort.get(3), tested.getFlights().get(0), "Sorting error");
-		assertEquals(preSort.get(2), tested.getFlights().get(1), "Sorting error");
-		assertEquals(preSort.get(1), tested.getFlights().get(2), "Sorting error");
-		assertEquals(preSort.get(0), tested.getFlights().get(3), "Sorting error");
-		
-		setUpStage5();
-		tested.setSortingType(Sortings.DESTINATION);
-		tested.sort();
-		assertEquals(preSort.get(3), tested.getFlights().get(0), "Sorting error");
-		assertEquals(preSort.get(0), tested.getFlights().get(1), "Sorting error");
-		assertEquals(preSort.get(1), tested.getFlights().get(2), "Sorting error");
-		assertEquals(preSort.get(2), tested.getFlights().get(3), "Sorting error");
-		
-		setUpStage5();
-		tested.setSortingType(Sortings.FLIGHT_NUMBER);
-		tested.sort();
-		assertEquals(preSort.get(2), tested.getFlights().get(0), "Sorting error");
-		assertEquals(preSort.get(3), tested.getFlights().get(1), "Sorting error");
-		assertEquals(preSort.get(1), tested.getFlights().get(2), "Sorting error");
-		assertEquals(preSort.get(0), tested.getFlights().get(3), "Sorting error");
-		
-		setUpStage5();
-		tested.setSortingType(Sortings.BOARDING_GATE);
-		tested.sort();
-		assertEquals(preSort.get(0), tested.getFlights().get(0), "Sorting error");
-		assertEquals(preSort.get(1), tested.getFlights().get(1), "Sorting error");
-		assertEquals(preSort.get(2), tested.getFlights().get(2), "Sorting error");
-		assertEquals(preSort.get(3), tested.getFlights().get(3), "Sorting error");
 	}
 }

@@ -276,11 +276,8 @@ public class Airport{
 				found = searchBG(bg);
 				break;
 			case TIME:
-				System.out.println("Fecha del primerito uwu " + flights.get(1).getDate().toString());
 				Date d = new Date(parameter);
-				System.out.println("Searched date "+d);
 				found = searchTime(d);
-				System.out.println("Found" + found.size());
 				break;				
 		}
 		return found;
@@ -355,7 +352,6 @@ public class Airport{
 	 * @return Flights coinciding with the given Flight number.
 	 */
 	public List<Flight> searchFN(String fn){
-		List<Flight> preSort = getFlights();
 		sortFN();
 		List<Flight> found = new ArrayList<Flight>();
 		Flight searched = new Flight("", fn, "", 0);
@@ -363,19 +359,18 @@ public class Airport{
 		int low = 0;
 		int high = length-1;
 		boolean finished = false;
-		while(low <= high && finished == false) {
+		while(low <= high && !finished) {
 			int mid = (high+low)/2;
 			Flight foundF = flights.get(mid);
 			if(searched.compareToFN(foundF) == 0) {
 				found.add(foundF);
 				finished = true;
-			}else if(foundF.compareToFN(searched) < 0) {
+			}else if(searched.compareToFN(foundF) < 0) {
 				high = mid-1;
-			}else {
+			}else if(searched.compareToFN(foundF) > 0) {
 				low = mid+1;
 			}
 		}
-		flights = preSort;
 		return found;
 	}
 	

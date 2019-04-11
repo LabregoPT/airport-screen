@@ -82,17 +82,24 @@ public class Date implements Comparable<Date> {
 	 * @throws NumberFormatException when the given String is not a formated date.
 	 */
 	public Date(String s) throws NumberFormatException, IndexOutOfBoundsException{
-		String[] parts = s.split("-");
-		year = Integer.parseInt(parts[0].trim());
-		month = Integer.parseInt(parts[1].trim());
-		day = Integer.parseInt(parts[2].trim());
-		String[] hourParts = parts[3].split(":");
-		int preHour = Integer.parseInt(hourParts[0].trim());
-		minutes = Integer.parseInt(hourParts[1].trim());
-		if(parts[4].equals(AM.trim())) {
+		String[] parts = s.split(" ");
+		String dateParts = parts[0];
+		String hourParts = parts[1];
+		String dayT = parts[2];
+		
+		String[] dp = dateParts.split("-");
+		year = Integer.parseInt(dp[0]);
+		month = Integer.parseInt(dp[1]);
+		day = Integer.parseInt(dp[2]);
+		
+		String[] hp = hourParts.split(":");
+		int preHour = Integer.parseInt(hp[0]);
+		minutes = Integer.parseInt(hp[1]);
+		
+		if(dayT.equals(AM)) {
 			dayMoment = AM;
 			hour = preHour;
-		}else {
+		}else if(dayT.equals(PM)){
 			dayMoment = PM;
 			hour = preHour +12;
 		}
@@ -205,14 +212,12 @@ public class Date implements Comparable<Date> {
 	public int getMinutes() {
 		return minutes;
 	}
-
-	
 	
 	/**
 	 * Returns a String representation of this object.
 	 */
 	public String toString() {
-		return getDate() + " - " + getTime();
+		return getDate() + "-" + getTime();
 	}
 	
 }//End of class
