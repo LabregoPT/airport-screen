@@ -245,7 +245,6 @@ public class Controller {
     	airport.sort();
     	long totalTime = System.currentTimeMillis() - initTime;
     	updateContainer(airport.getFlights());
-    	System.out.println(totalTime);
     	informationLabel.setText(totalTime + " ms were needed to sort.");
     }
     
@@ -290,7 +289,7 @@ public class Controller {
 			title.setText(title.getText() + "flight number.");
 			break;
 		case TIME:
-			title.setText(title.getText() + "date in YYYY-MM-AA - HH:MM AM/PM format.");
+			title.setText(title.getText() + "date in YYYY-MM-AA - HH:MM - AM/PM format.");
 			break;
         }
         TextField inputTF = new TextField();
@@ -360,12 +359,12 @@ public class Controller {
      */
     void clearContainer() {
     	for(int i = 0; i<ITEMS_PER_PAGE; i++) {
-    		cells[i][0].setText("");
-			cells[i][1].setText("");
-			cells[i][2].setText("");
-			cells[i][3].setText("");
-			cells[i][4].setText("");
-			cells[i][5].setText("");
+    		cells[i+1][0].setText("");
+			cells[i+1][1].setText("");
+			cells[i+1][2].setText("");
+			cells[i+1][3].setText("");
+			cells[i+1][4].setText("");
+			cells[i+1][5].setText("");
     	}
     }
 }

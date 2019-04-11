@@ -276,10 +276,11 @@ public class Airport{
 				found = searchBG(bg);
 				break;
 			case TIME:
-				System.out.println("Fecha del primerito uwu " + flights.get(0).getDate().toString());
+				System.out.println("Fecha del primerito uwu " + flights.get(1).getDate().toString());
 				Date d = new Date(parameter);
+				System.out.println("Searched date "+d);
 				found = searchTime(d);
-				System.out.println("Found");
+				System.out.println("Found" + found.size());
 				break;				
 		}
 		return found;
