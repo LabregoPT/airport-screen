@@ -166,7 +166,7 @@ public class Airport{
 	 * Sorts the list of flights by time using a bubble sort algorithm.
 	 */
 	public void sortTime() {
-		int length = flights.size()-1;
+		int length = flights.size();
 		for (int i = 0; i < length-1; i++) {
 			for (int j = 0; j < length-i-1 ; j++) {
 				Flight current = flights.get(j);
