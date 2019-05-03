@@ -1,6 +1,7 @@
 package model;
 
-import java.util.*;
+import java.util.Comparator;
+import java.util.Random;
 import java.io.*;
 
 /**
@@ -30,7 +31,7 @@ public class Airport{
 	 */
 	public Airport() {
 		currentSortType = Sortings.TIME;
-		flights = new ArrayList<Flight>();
+		flights = new LinkedFlightList();
 	}
 	
 	/**
@@ -59,7 +60,7 @@ public class Airport{
 			int i = 0;
 			while(i<flightsNum) {
 				String airline = readAirline(rnd.nextInt(47));
-				String uniqueNumber = assignNumber(airline, i);
+				String uniqueNumber = assignNumber(airline);
 				String destination = readDestination(rnd.nextInt(100));
 				Flight f = new Flight(airline, uniqueNumber, destination, 1+rnd.nextInt(10));
 				flights.add(f);
@@ -114,7 +115,7 @@ public class Airport{
 	 * @param i The integer number.
 	 * @return 
 	 */
-	public String assignNumber(String airline, int n) {
+	public String assignNumber(String airline) {
 		Random rnd = new Random();
 		String number = "";
 		if(flights.isEmpty()) {
@@ -289,7 +290,7 @@ public class Airport{
 	 * @return Flights coinciding with the given date.
 	 */
 	public List<Flight> searchTime(Date d){
-		List<Flight> found = new ArrayList<Flight>();
+		List<Flight> found = new LinkedFlightList();
 		int length = flights.size();
 		for(int i = 0; i<length; i++) {
 			Date foundDate = flights.get(i).getDate();
@@ -306,7 +307,7 @@ public class Airport{
 	 * @return Flights coinciding with the given airline.
 	 */
 	public List<Flight> searchAirline(String al){
-		List<Flight> found = new ArrayList<Flight>();
+		List<Flight> found = new LinkedFlightList();
 		Comparator<Flight> searcher = new Comparator<Flight>() {
 			public int compare(Flight o1, Flight o2) {
 				return o1.compareToAirline(o2);
@@ -329,7 +330,7 @@ public class Airport{
 	 * @return Flights coinciding with the given destination.
 	 */
 	public List<Flight> searchDestination(String d){
-		List<Flight> found = new ArrayList<Flight>();
+		List<Flight> found = new LinkedFlightList();
 		Comparator<Flight> searcher = new Comparator<Flight>() {
 			public int compare(Flight o1, Flight o2) {
 				return o1.compareToDestination(o2);
@@ -353,7 +354,7 @@ public class Airport{
 	 */
 	public List<Flight> searchFN(String fn){
 		sortFN();
-		List<Flight> found = new ArrayList<Flight>();
+		List<Flight> found = new LinkedFlightList();
 		Flight searched = new Flight("", fn, "", 0);
 		int length = flights.size();
 		int low = 0;
@@ -380,7 +381,7 @@ public class Airport{
 	 * @return Flights coinciding with the given boarding gate.
 	 */
 	public List<Flight> searchBG(int bg){
-		List<Flight> found = new ArrayList<Flight>();
+		List<Flight> found = new LinkedFlightList();
 		Comparator<Flight> searcher = new Comparator<Flight>() {
 			public int compare(Flight o1, Flight o2) {
 				return o1.compareToBG(o2);

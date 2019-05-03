@@ -26,6 +26,12 @@ public class Flight implements Comparable<Flight>{
 	/**The date this flight is done.*/
 	private Date date;
 	
+	/**The next flight in the list*/
+	private Flight next;
+	
+	/**The previous flight in the list*/
+	private Flight prev;
+	
 	//Methods
 	
 	/**
@@ -138,6 +144,38 @@ public class Flight implements Comparable<Flight>{
 			msg = 0;
 		}
 		return msg;
+	}
+	
+	/**
+	 * Returns the next Flight in the linked list.
+	 * @return Next flight in the list.
+	 */
+	public Flight getNext() {
+		return next;
+	}
+	
+	/**
+	 * Returns the previous Flight in the linked list.
+	 * @return Previous flight in the list.
+	 */
+	public Flight getPrev() {
+		return prev;
+	}
+	
+	/**
+	 * Sets the next flight in the linked list.
+	 * @param n Next flight to be set.
+	 */
+	public void setNext(Flight n) {
+		next = n;
+	}
+	
+	/**
+	 * Sets the previous flight in the linked list.
+	 * @param p Previous flight to be set.
+	 */ 
+	public void setPrev(Flight p) {
+		prev = p;
 	}
 	
 }//End of class
