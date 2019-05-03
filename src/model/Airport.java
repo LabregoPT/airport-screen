@@ -2,6 +2,7 @@ package model;
 
 import java.util.Comparator;
 import java.util.Random;
+import lists.*;
 import java.io.*;
 
 /**
