@@ -109,18 +109,7 @@ public class LinkedFlightList implements List<Flight>{
 	@Override
 	public void sort(Comparator<Flight> c) {
 		if(first!=null) {
-			ArrayList<Flight> auxList = new ArrayList<Flight>();
-			Flight current = first;
-			auxList.add(current);
-			while(current.getNext() != first) {
-				current = current.getNext();
-				auxList.add(current);
-			}
-			auxList.sort(c);
-			first = null;
-			for(Flight f : auxList) {
-				add(f);
-			}
+			
 		}
 	}
 
