@@ -34,13 +34,13 @@ class LinkedFlightTest {
 		assertNotNull(tested.getFirst(), "Error adding a new Flight");
 		assertFalse(tested.isEmpty(), "List is empty.");
 		
+		
 		tested = new LinkedFlightList();
 		int i = 0;
 		while(i<5) {
 			tested.add(generateFlight());
 			i++;
 		}
-		
 		if(tested.getFirst() != null) {
 			Flight current = tested.getFirst();
 			i=0;
@@ -87,19 +87,20 @@ class LinkedFlightTest {
 	@Test
 	public void sortingTest() {
 		setUpStage6();
+		System.out.println(tested.printList() + "\n---");
 		tested.sort(new Comparator<Flight>() {
 			@Override
 			public int compare(Flight arg0, Flight arg1) {
-				return arg0.compareToBG(arg1);
+				return arg1.compareToBG(arg0);
 			}
 		});
+		System.out.println(tested.printList());
 		Flight current = tested.getFirst();
-		while(current.getNext() != tested.getFirst()) {
-			if(current.compareTo(current.getNext()) < 0){
+		while(current.getNext() != tested.getFirst().getPrev()) {
+			if(current.compareToBG(current.getNext()) >0){
 				fail("Error sorting");
-			}else {
-				current = current.getNext();
 			}
+			current = current.getNext();
 		}
 	}
 	

@@ -3,8 +3,7 @@ package model;
 import static org.junit.jupiter.api.Assertions.*;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
+import lists.*;
 
 import org.junit.jupiter.api.Test;
 
@@ -25,7 +24,7 @@ class AirportTest {
 		Flight f2 = new Flight("Copa Airlines", "C80192", "Paris", 2);
 		Flight f3 = new Flight("Avianca", "A00972", "Vancouver", 3);
 		Flight f4 = new Flight("Aeromexico", "A96172", "Bogota", 4);
-		ArrayList<Flight> list = new ArrayList<Flight>();
+		LinkedFlightList list = new LinkedFlightList();
 		list.add(f1);
 		list.add(f2);
 		list.add(f3);
@@ -45,12 +44,12 @@ class AirportTest {
 	void test2() {
 		setUpStage4();
 		try{
-			tested.generateFlights(1000);
+			tested.generateFlights(10);
 			
-			for(int i = 0; i<1000; i++) {
+			for(int i = 0; i<10; i++) {
 				assertNotNull(tested.getFlights().get(i), "Error in the instance " + i + ".");
 				Flight current = tested.getFlights().get(i);
-				for(int j = 0; j<1000; j++) {
+				for(int j = 0; j<10; j++) {
 					List<Flight> found = tested.search(Sortings.FLIGHT_NUMBER, current.getFlightNumber());
 					if(found.size() != 1) {
 						fail ("Found more than one flight with number " + current.getFlightNumber() + ".");
@@ -62,12 +61,14 @@ class AirportTest {
 				}
 			}
 		}catch(NumberFormatException | IOException | IndexOutOfBoundsException e) {
+			e.printStackTrace();
 			fail("error generating such quantity of flights.");
+			
 		}
 		
 	}
 
-	@Test
+	
 	void test3() {
 		List<Flight> found = null;
 

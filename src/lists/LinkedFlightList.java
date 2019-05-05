@@ -1,9 +1,7 @@
 package lists;
 
 import model.*;
-import java.util.ArrayList;
 import java.util.Comparator;
-import java.util.Observable;
 
 /**
  * Class meant to be used when handling the flight lists in this program using Linked List linking methods.
@@ -12,7 +10,6 @@ import java.util.Observable;
  */
 public class LinkedFlightList implements List<Flight>{
 	
-	Observable lista = new Observable();
 	/**
 	 * First flight in the list, also known as the List's head.
 	 */
@@ -25,17 +22,14 @@ public class LinkedFlightList implements List<Flight>{
 	public void add(Flight element) {
 		if(first==null) {
 			first = element;
-			first.setNext(first);
-			first.setPrev(first);
-		}else {
-			Flight current = first;
-			while(current.getNext() != first) {
-				current = current.getNext();
-			}
-			current.setNext(element);
-			element.setPrev(current);
+			first.setNext(element);
 			first.setPrev(element);
+		}else {
+			Flight last = first.getPrev();
 			element.setNext(first);
+			element.setPrev(last);
+			last.setNext(element);
+			first.setPrev(element);
 		}
 	}
 
@@ -71,7 +65,7 @@ public class LinkedFlightList implements List<Flight>{
 	@Override
 	public Flight get(int index) throws IndexOutOfBoundsException {
 		if(index < 0 || index >= size()) {
-			throw new IndexOutOfBoundsException(index+"");
+			throw new IndexOutOfBoundsException("Tried to get index " + index);
 		}
 		Flight found = first;
 		int currentIndex = 0;
@@ -103,16 +97,55 @@ public class LinkedFlightList implements List<Flight>{
 	}
 
 	/**
-	 * Simply converts the elements in this list to an ArrayList, sorts them using the Collections.sort() method and then transforms it back again to a Linked List.
-	 * @see https://docs.oracle.com/javase/7/docs/api/java/util/Collections.html#sort(java.util.List,%20java.util.Comparator)
+	 * Sorts the Linked List using a Merge sorting algorithm.
+	 * @param c The sorting criteria.
 	 */
 	@Override
 	public void sort(Comparator<Flight> c) {
+		//First check if list is not empty and doesn't has a single element.
 		if(first!=null) {
-			
+			int length = size();
+			for (int i = 0; i < length-1; i++) {
+				for (int j = 0; j < length-i-1 ; j++) {
+					Flight current = get(j);
+					System.out.println("Current: " + current);
+					Flight next = get(j+1);
+					System.out.println("Next: " + next);
+					if(c.compare(current, next) < 0) {
+						swap(current, next);
+					}
+				}
+			}
+			System.out.println("---");
+			System.out.println("Sorted list:\n" + printList());
 		}
 	}
+	
+	/**
+	 * Swaps the position of two flights, and links it with their adjacent nodes.
+	 * @param swapA First element to be swapped
+	 * @param swapB Second element to be swapped
+	 */
+	public void swap(Flight swapA, Flight swapB) {
+		System.out.println("---");
+		System.out.println("Swapped " + swapA +" with " + swapB);
+		Flight prevA = swapA.getPrev();
+		Flight nextB = swapB.getNext();
+		//Then link again, in the desired order.
+		prevA.setNext(swapB);
+		swapB.setPrev(prevA);
+		nextB.setPrev(swapA);
+		swapA.setNext(nextB);
+		swapB.setNext(swapA);
+		swapA.setPrev(swapB);
+		if(swapA == first) {
+			first = swapB;
+		}
+		System.out.println("List after swap: \n" + printList());
+		System.out.println("----");
+	}
 
+	
 	/**
 	 * Returns a new LinkedList of elements containing the elements located from the given initial index to the given final index, or an empty list if both indexes are equal. 
 	 */
@@ -137,5 +170,17 @@ public class LinkedFlightList implements List<Flight>{
 	public Flight getFirst() {
 		return first;
 	}
+	
+	public String printList() {
+		String msg = "";
+		Flight current = first;
+		msg = current.toString();
+		while(current.getNext()!=first) {
+			current = current.getNext();
+			msg += "\n"+current.toString();
+		}
+		return msg;
+	}
+	
 }
 

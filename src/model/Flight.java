@@ -178,4 +178,9 @@ public class Flight implements Comparable<Flight>{
 		prev = p;
 	}
 	
+	@Override
+	public String toString() {
+		return String.format("%s-%s-%s-%d - %s", airline, flightNumber, destination, boardingGate, date.toString());
+	}
+	
 }//End of class

@@ -1,8 +1,7 @@
 package ui;
 
 import java.io.IOException;
-import java.util.*;
-
+import lists.*;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;

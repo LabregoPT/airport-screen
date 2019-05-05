@@ -68,8 +68,8 @@ public class Airport{
 				i++;
 			
 		}
-		setSortingType(Sortings.TIME);
-		sort();
+		//setSortingType(Sortings.TIME);
+		//sort();
 	}
 	
 	/**
@@ -226,12 +226,14 @@ public class Airport{
 	 * Sorts the list of flights by Flight Number using the implemented List.sort() method.
 	 */
 	public void sortFN() {
+		System.out.println("   started sorting");
 		flights.sort(new Comparator<Flight>() {
 			public int compare(Flight o1, Flight o2) {
 				return o1.compareToFN(o2);
 			}
 			
 		});
+		System.out.println("   finished sorting, total of " + flights.size() + " were sorted");
 	}
 	
 	/**
