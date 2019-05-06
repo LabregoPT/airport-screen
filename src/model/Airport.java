@@ -57,19 +57,22 @@ public class Airport{
 	 * @throws IOException When there's an error reading the program's files.
 	 */
 	public void generateFlights(int flightsNum) throws IOException{
-			Random rnd = new Random();
-			int i = 0;
-			while(i<flightsNum) {
-				String airline = readAirline(rnd.nextInt(47));
-				String uniqueNumber = assignNumber(airline);
-				String destination = readDestination(rnd.nextInt(100));
-				Flight f = new Flight(airline, uniqueNumber, destination, 1+rnd.nextInt(10));
-				flights.add(f);
-				i++;
-			
+		Random rnd = new Random();
+		int i = 0;
+		while(i<flightsNum) {
+			i++;
+			System.out.println("Started flight generation...");
+			String airline = readAirline(rnd.nextInt(47));
+			String destination = readDestination(rnd.nextInt(100));
+			String uniqueNumber = assignNumber(airline);
+			Flight f = new Flight(airline, uniqueNumber, destination, 1+rnd.nextInt(10));
+			System.out.println("Generated flight " + f);
+			flights.add(f);
+			System.out.println("Added flight at index " + i);
+			System.out.println("--\nList as of now:\n"+flights.printList()+"\n---");
 		}
-		//setSortingType(Sortings.TIME);
-		//sort();
+		setSortingType(Sortings.TIME);
+		sort();
 	}
 	
 	/**
@@ -88,6 +91,7 @@ public class Airport{
 			i++;
 		}
 		br.close();
+		System.out.println(" Read airline " + msg);
 		return msg;
 	}
 	
@@ -107,6 +111,7 @@ public class Airport{
 			i++;
 		}
 		br.close();
+		System.out.println(" Read destination " + msg);
 		return msg;
 	}
 	
@@ -130,6 +135,7 @@ public class Airport{
 				}
 			}
 		}
+		System.out.println(" Assigned number " + number);
 		return number;
 	}
 	
@@ -226,14 +232,12 @@ public class Airport{
 	 * Sorts the list of flights by Flight Number using the implemented List.sort() method.
 	 */
 	public void sortFN() {
-		System.out.println("   started sorting");
 		flights.sort(new Comparator<Flight>() {
 			public int compare(Flight o1, Flight o2) {
 				return o1.compareToFN(o2);
 			}
 			
 		});
-		System.out.println("   finished sorting, total of " + flights.size() + " were sorted");
 	}
 	
 	/**
@@ -356,23 +360,18 @@ public class Airport{
 	 * @return Flights coinciding with the given Flight number.
 	 */
 	public List<Flight> searchFN(String fn){
-		sortFN();
 		List<Flight> found = new LinkedFlightList();
-		Flight searched = new Flight("", fn, "", 0);
+		Comparator<Flight> searcher = new Comparator<Flight>() {
+			public int compare(Flight o1, Flight o2) {
+				return o1.compareToBG(o2);
+			}
+		};
+		Flight searched = new Flight("", "", fn, 0);
 		int length = flights.size();
-		int low = 0;
-		int high = length-1;
-		boolean finished = false;
-		while(low <= high && !finished) {
-			int mid = (high+low)/2;
-			Flight foundF = flights.get(mid);
-			if(searched.compareToFN(foundF) == 0) {
-				found.add(foundF);
-				finished = true;
-			}else if(searched.compareToFN(foundF) < 0) {
-				high = mid-1;
-			}else if(searched.compareToFN(foundF) > 0) {
-				low = mid+1;
+		for(int i = 0; i<length; i++) {
+			Flight current = flights.get(i);
+			if(searcher.compare(current, searched) == 0) {
+				found.add(current);
 			}
 		}
 		return found;

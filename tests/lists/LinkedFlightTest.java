@@ -18,10 +18,10 @@ class LinkedFlightTest {
 	
 	public void setUpStage6() {
 		tested = new LinkedFlightList();
-		Flight first = new Flight("Copa Airlines", "C00319", "Paris", 4);
-		Flight second = new Flight("Cayan Airways", "C80192", "Warsaw", 2);
-		Flight third = new Flight("Avianca", "A00319", "Belgium", 9);
-		Flight fourth = new Flight("SATENA", "S02349", "Bogota", 6);
+		Flight first = new Flight("Avianca", "A00319", "Belgium", 9); 
+		Flight second = new Flight("SATENA", "S02349", "Bogota", 6);
+		Flight third = new Flight("Copa Airlines", "C00319", "Paris", 4); 
+		Flight fourth = new Flight("Cayan Airways", "C80192", "Warsaw", 2);
 		tested.add(first);tested.add(second);tested.add(third);tested.add(fourth);
 	}
 	
@@ -66,6 +66,9 @@ class LinkedFlightTest {
 		assertTrue(tested.isEmpty(), "List is not empty");
 		
 		setUpStage6();
+		Flight first = tested.getFirst();
+		assertNotNull(tested.get(0), "Failed to give an element" );
+		assertEquals(first, tested.get(0), "Given incorrect Flight.");
 		Flight second = tested.getFirst().getNext();
 		assertNotNull(tested.get(1), "Failed to give an element");
 		assertEquals(second, tested.get(1), "Given flight is not the second element");
@@ -87,14 +90,13 @@ class LinkedFlightTest {
 	@Test
 	public void sortingTest() {
 		setUpStage6();
-		System.out.println(tested.printList() + "\n---");
+		System.out.println("---Only pay attention here");
 		tested.sort(new Comparator<Flight>() {
 			@Override
 			public int compare(Flight arg0, Flight arg1) {
-				return arg1.compareToBG(arg0);
+				return arg0.compareToBG(arg1);
 			}
 		});
-		System.out.println(tested.printList());
 		Flight current = tested.getFirst();
 		while(current.getNext() != tested.getFirst().getPrev()) {
 			if(current.compareToBG(current.getNext()) >0){
@@ -113,5 +115,6 @@ class LinkedFlightTest {
 		Flight f = new Flight(airline, uniqueNumber, destination, rnd.nextInt(10));
 		return f;
 	}
+
 
 }

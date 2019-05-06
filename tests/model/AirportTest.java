@@ -19,7 +19,7 @@ class AirportTest {
 		tested = new Airport();
 	}
 	
-	private void setUpStage5() {
+	private void setUpStage6() {
 		Flight f1 = new Flight("Emirates", "E90193", "Los Angeles", 1);
 		Flight f2 = new Flight("Copa Airlines", "C80192", "Paris", 2);
 		Flight f3 = new Flight("Avianca", "A00972", "Vancouver", 3);
@@ -33,19 +33,19 @@ class AirportTest {
 		tested.setFlights(list);
 	}
 	
-	@Test
-	void test1() {
+//	@Test
+	void testConstructor() {
 		setUpStage3();
 		tested = new Airport();
 		assertNotNull(tested, "Failed to instantiate class");
+		System.out.println("Ended constructor test");
 	}
 	
 	@Test
-	void test2() {
+	void testUniqueNumber() {
 		setUpStage4();
 		try{
 			tested.generateFlights(10);
-			
 			for(int i = 0; i<10; i++) {
 				assertNotNull(tested.getFlights().get(i), "Error in the instance " + i + ".");
 				Flight current = tested.getFlights().get(i);
@@ -68,43 +68,43 @@ class AirportTest {
 		
 	}
 
-	
-	void test3() {
+//	@Test
+	void testSearch() {
 		List<Flight> found = null;
 
-		setUpStage5();
+		setUpStage6();
 		found = tested.search(Sortings.AIRLINE, "Avianca");
 		assertTrue(found.size() == 1, "Found more than 1 flight.");
 		assertTrue(found.get(0).equals(tested.getFlights().get(2)), "Flight found is not the correct one.");
 		
-		setUpStage5();
+		setUpStage6();
 		found = tested.search(Sortings.AIRLINE, "Ecolines");
 		assertTrue(found.isEmpty(), "Found incorrect values.");
 		
-		setUpStage5();
+		setUpStage6();
 		found = tested.search(Sortings.DESTINATION, "Bogota");
 		assertTrue(found.size() == 1, "Found more than 1 flight.");
 		assertTrue(found.get(0).equals(tested.getFlights().get(3)), "Flight found is not the correct one.");
 		
-		setUpStage5();
+		setUpStage6();
 		found = tested.search(Sortings.DESTINATION, "Ciudad de Mexico");
 		assertTrue(found.isEmpty(), "Found incorrect values.");
 		
-		setUpStage5();
+		setUpStage6();
 		found = tested.search(Sortings.FLIGHT_NUMBER, "C80192");
 		assertEquals(1, found.size(), "Found more than 1 flight.");
 		assertTrue(found.get(0).equals(tested.getFlights().get(2)), "Flight found is not the correct one.");
 		
-		setUpStage5();
+		setUpStage6();
 		found = tested.search(Sortings.FLIGHT_NUMBER, "D80912");
 		assertTrue(found.isEmpty(), "Found incorrect values.");
 		
-		setUpStage5();
+		setUpStage6();
 		found = tested.search(Sortings.BOARDING_GATE, "4");
 		assertEquals(1, found.size(), "Found more than 1 flight.");
 		assertTrue(found.get(0).equals(tested.getFlights().get(3)), "Flight found is not the correct one.");
 		
-		setUpStage5();
+		setUpStage6();
 		found = tested.search(Sortings.BOARDING_GATE, "5");
 		assertTrue(found.isEmpty(), "Found incorrect values.");
 	}

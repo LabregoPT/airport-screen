@@ -65,7 +65,7 @@ public class LinkedFlightList implements List<Flight>{
 	@Override
 	public Flight get(int index) throws IndexOutOfBoundsException {
 		if(index < 0 || index >= size()) {
-			throw new IndexOutOfBoundsException("Tried to get index " + index);
+			throw new IndexOutOfBoundsException("Tried to get index " + index + " when size is " + size());
 		}
 		Flight found = first;
 		int currentIndex = 0;
@@ -82,7 +82,7 @@ public class LinkedFlightList implements List<Flight>{
 	@Override
 	public void set(int index, Flight element) throws IndexOutOfBoundsException {
 		if(index < 0 || index >= size()) {
-			throw new IndexOutOfBoundsException(": " + index);
+			throw new IndexOutOfBoundsException("Tried to set " + element + " in index " + index+ "when size is " + size());
 		}
 		Flight found = first;
 		int currentIndex = 0;
@@ -102,22 +102,17 @@ public class LinkedFlightList implements List<Flight>{
 	 */
 	@Override
 	public void sort(Comparator<Flight> c) {
-		//First check if list is not empty and doesn't has a single element.
 		if(first!=null) {
 			int length = size();
 			for (int i = 0; i < length-1; i++) {
 				for (int j = 0; j < length-i-1 ; j++) {
 					Flight current = get(j);
-					System.out.println("Current: " + current);
 					Flight next = get(j+1);
-					System.out.println("Next: " + next);
-					if(c.compare(current, next) < 0) {
+					if(c.compare(current, next) > 0) {
 						swap(current, next);
 					}
 				}
 			}
-			System.out.println("---");
-			System.out.println("Sorted list:\n" + printList());
 		}
 	}
 	
@@ -127,8 +122,6 @@ public class LinkedFlightList implements List<Flight>{
 	 * @param swapB Second element to be swapped
 	 */
 	public void swap(Flight swapA, Flight swapB) {
-		System.out.println("---");
-		System.out.println("Swapped " + swapA +" with " + swapB);
 		Flight prevA = swapA.getPrev();
 		Flight nextB = swapB.getNext();
 		//Then link again, in the desired order.
@@ -141,24 +134,33 @@ public class LinkedFlightList implements List<Flight>{
 		if(swapA == first) {
 			first = swapB;
 		}
-		System.out.println("List after swap: \n" + printList());
-		System.out.println("----");
+		System.out.println("  Swapped "+swapA+" with "+swapB);
 	}
 
-	
 	/**
-	 * Returns a new LinkedList of elements containing the elements located from the given initial index to the given final index, or an empty list if both indexes are equal. 
+	 * Method used to segment a list into a smaller list containing only the elements in the first index to the last index, both given.
+	 * @deprecated Not used anywhere in the program, supposed to work with pagination's requirement but figured out a way to paginate without sub listing.
 	 */
-	@Override
+	@Override @Deprecated
 	public LinkedFlightList subList(int initIndex, int finalIndex) throws IndexOutOfBoundsException {
-		LinkedFlightList toReturn = null; 
+		LinkedFlightList toReturn = null;
 		if(initIndex != finalIndex) {
-			toReturn = new LinkedFlightList();
-			int currentIndex = initIndex;
-			while(currentIndex < finalIndex) {
-				toReturn.add(get(currentIndex));
-				currentIndex++;
+			if(initIndex < finalIndex) {
+				toReturn = new LinkedFlightList();
+				while(initIndex < finalIndex) {
+					System.out.println("---\nIs error here?\n" + this.printList());
+					Flight toAdd = get(initIndex);
+					System.out.println("---\nOr here?\n" + this.printList());
+					toReturn.add(toAdd);
+					System.out.println("---\nOr maybe here?\n" + this.printList());
+					initIndex++;
+				}
+				
+			}else {
+				throw new IllegalArgumentException ("Initial index cannot be less than final index");
 			}
+		}else {
+			toReturn = new LinkedFlightList();
 		}
 		return toReturn;
 	}

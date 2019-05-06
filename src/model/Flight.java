@@ -168,6 +168,8 @@ public class Flight implements Comparable<Flight>{
 	 */
 	public void setNext(Flight n) {
 		next = n;
+		
+		System.out.println("   Setted next of " +this+ " to " + n);
 	}
 	
 	/**
@@ -176,6 +178,7 @@ public class Flight implements Comparable<Flight>{
 	 */ 
 	public void setPrev(Flight p) {
 		prev = p;
+		System.out.println("   Setted prev of " +this+ " to " +p);
 	}
 	
 	@Override
