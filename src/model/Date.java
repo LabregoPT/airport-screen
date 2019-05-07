@@ -220,4 +220,12 @@ public class Date implements Comparable<Date> {
 		return getDate() + "-" + getTime();
 	}
 	
+	public boolean equals(Date d) {
+		boolean r = false;
+		if(d.compareTo(this) == 0) {
+			r= true;
+		}
+		return r;
+	}
+	
 }//End of class

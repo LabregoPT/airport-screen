@@ -47,8 +47,6 @@ class LinkedFlightTest {
 			while(i<5) {
 				if(current != null) {
 					assertNotNull(current);
-					assertNotNull(current.getNext());
-					assertNotNull(current.getPrev());
 				}else {
 					fail("Found a non created flight.");
 				}
@@ -72,7 +70,7 @@ class LinkedFlightTest {
 		Flight second = tested.getFirst().getNext();
 		assertNotNull(tested.get(1), "Failed to give an element");
 		assertEquals(second, tested.get(1), "Given flight is not the second element");
-		Flight last = tested.getFirst().getPrev();
+		Flight last = tested.getLast();
 		assertNotNull(tested.get(3), "Failted to give an element");
 		assertEquals(last, tested.get(3), "Given incorrect Flight");
 		
@@ -83,14 +81,13 @@ class LinkedFlightTest {
 		assertNotEquals(previous, toAdd, "Failed to set element");
 		assertEquals(toAdd, tested.get(3), "Failed to set element");
 		assertEquals(tested.get(2).getNext(), toAdd, "Error linking");
-		assertEquals(tested.getFirst().getPrev(), toAdd, "Error linking");
+		assertEquals(tested.getLast(), toAdd, "Error linking");
 		
 	}
 	
 	@Test
 	public void sortingTest() {
 		setUpStage6();
-		System.out.println("---Only pay attention here");
 		tested.sort(new Comparator<Flight>() {
 			@Override
 			public int compare(Flight arg0, Flight arg1) {
@@ -98,12 +95,21 @@ class LinkedFlightTest {
 			}
 		});
 		Flight current = tested.getFirst();
-		while(current.getNext() != tested.getFirst().getPrev()) {
+		while(current.getNext() != tested.getLast()) {
 			if(current.compareToBG(current.getNext()) >0){
 				fail("Error sorting");
 			}
 			current = current.getNext();
 		}
+	}
+	
+	@Test
+	public void subListTest() {
+		setUpStage6();
+		LinkedFlightList toTest = tested.subList(0, 2);
+		assertEquals(toTest.size(), 2, "Size of subList is not 2");
+		assertTrue(toTest.get(0).clone().equals(tested.get(0).clone()), "Failed to add first element");
+		assertTrue(toTest.get(1).clone().equals(tested.get(1).clone()), "Failed to add first element");
 	}
 	
 	public Flight generateFlight() throws IOException {

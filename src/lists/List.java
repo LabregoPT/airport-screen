@@ -57,6 +57,6 @@ public interface List<E extends Object> {
 	 */
 	public List<E> subList(int initIndex, int finalIndex) throws IndexOutOfBoundsException;
 	
-	
 	public String printList();
+	
 }

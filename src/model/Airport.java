@@ -60,19 +60,15 @@ public class Airport{
 		Random rnd = new Random();
 		int i = 0;
 		while(i<flightsNum) {
-			i++;
-			System.out.println("Started flight generation...");
 			String airline = readAirline(rnd.nextInt(47));
 			String destination = readDestination(rnd.nextInt(100));
 			String uniqueNumber = assignNumber(airline);
 			Flight f = new Flight(airline, uniqueNumber, destination, 1+rnd.nextInt(10));
-			System.out.println("Generated flight " + f);
 			flights.add(f);
-			System.out.println("Added flight at index " + i);
-			System.out.println("--\nList as of now:\n"+flights.printList()+"\n---");
+			i++;
 		}
-		setSortingType(Sortings.TIME);
-		sort();
+//		setSortingType(Sortings.TIME);
+//		sort();
 	}
 	
 	/**
@@ -91,7 +87,6 @@ public class Airport{
 			i++;
 		}
 		br.close();
-		System.out.println(" Read airline " + msg);
 		return msg;
 	}
 	
@@ -111,7 +106,6 @@ public class Airport{
 			i++;
 		}
 		br.close();
-		System.out.println(" Read destination " + msg);
 		return msg;
 	}
 	
@@ -135,7 +129,6 @@ public class Airport{
 				}
 			}
 		}
-		System.out.println(" Assigned number " + number);
 		return number;
 	}
 	
@@ -194,7 +187,7 @@ public class Airport{
 	public void sortAirline() {
 		int size = flights.size();
 		for (int i = 0; i<size; i++) {
-			Flight toInsert = flights.get(i);
+			Flight toInsert = flights.get(i).clone();
 			boolean ended = false;
 			for(int j = i; j>0 && !ended; j--) {
 				Flight current = flights.get(j-1);
@@ -222,8 +215,8 @@ public class Airport{
 					min = j;
 				}
 			}
-			Flight temp = flights.get(i);
-			flights.set(i, flights.get(min));
+			Flight temp = flights.get(i).clone();
+			flights.set(i, flights.get(min).clone());
 			flights.set(min, temp);
 		}
 	}
@@ -254,8 +247,8 @@ public class Airport{
 					min = j;
 				}
 			}
-			Flight temp = flights.get(i);
-			flights.set(i, flights.get(min));
+			Flight temp = flights.get(i).clone();
+			flights.set(i, flights.get(min).clone());
 			flights.set(min, temp);
 		}
 	}
@@ -300,9 +293,9 @@ public class Airport{
 		List<Flight> found = new LinkedFlightList();
 		int length = flights.size();
 		for(int i = 0; i<length; i++) {
-			Date foundDate = flights.get(i).getDate();
+			Date foundDate = flights.get(i).clone().getDate();
 			if(foundDate.compareTo(d) == 0) {
-				found.add(flights.get(i));
+				found.add(flights.get(i).clone());
 			}
 		}
 		return found;
@@ -323,7 +316,7 @@ public class Airport{
 		Flight searched = new Flight(al, "", "", 0);
 		int length = flights.size();
 		for(int i = 0; i<length; i++) {
-			Flight current = flights.get(i);
+			Flight current = flights.get(i).clone();
 			if(searcher.compare(current, searched) == 0) {
 				found.add(current);
 			}
@@ -346,7 +339,7 @@ public class Airport{
 		Flight searched = new Flight("", "", d, 0);
 		int length = flights.size();
 		for(int i = 0; i<length; i++) {
-			Flight current = flights.get(i);
+			Flight current = flights.get(i).clone();
 			if(searcher.compare(current, searched) == 0) {
 				found.add(current);
 			}
@@ -360,16 +353,16 @@ public class Airport{
 	 * @return Flights coinciding with the given Flight number.
 	 */
 	public List<Flight> searchFN(String fn){
-		List<Flight> found = new LinkedFlightList();
+		LinkedFlightList found = new LinkedFlightList();
 		Comparator<Flight> searcher = new Comparator<Flight>() {
 			public int compare(Flight o1, Flight o2) {
-				return o1.compareToBG(o2);
+				return o1.compareToFN(o2);
 			}
 		};
-		Flight searched = new Flight("", "", fn, 0);
+		Flight searched = new Flight("", fn, "", 0);
 		int length = flights.size();
 		for(int i = 0; i<length; i++) {
-			Flight current = flights.get(i);
+			Flight current = flights.get(i).clone();
 			if(searcher.compare(current, searched) == 0) {
 				found.add(current);
 			}
@@ -392,7 +385,7 @@ public class Airport{
 		Flight searched = new Flight("", "", "", bg);
 		int length = flights.size();
 		for(int i = 0; i<length; i++) {
-			Flight current = flights.get(i);
+			Flight current = flights.get(i).clone();
 			if(searcher.compare(current, searched) == 0) {
 				found.add(current);
 			}

@@ -36,10 +36,10 @@ public class Flight implements Comparable<Flight>{
 	
 	/**
 	 * Constructor method. Initializes an instance of the Flight class.
-	 * @param al
-	 * @param fn
-	 * @param d
-	 * @param bg
+	 * @param al The flight's airline
+	 * @param fn The flight's flight number
+	 * @param d The flight's destination
+	 * @param bg The flight's boarding gate
 	 */
 	public Flight(String al, String fn, String d, int bg) {
 		airline = al;
@@ -49,6 +49,21 @@ public class Flight implements Comparable<Flight>{
 		date = new Date();
 	}
 
+	/**
+	 * Constructor method. Initializes an instance of the Flight class.
+	 * @param al The flight's airline
+	 * @param fn The flight's flight number
+	 * @param d The flight's destination
+	 * @param bg The flight's boarding gate
+	 * @param da The flight's date
+	 */
+	public Flight(String al, String fn, String d, int bg, Date da) {
+		airline = al;
+		flightNumber = fn;
+		destination = d;
+		boardingGate = bg;
+		date = da;
+	}
 	/**
 	 * Returns the date of this flight.
 	 * @return The date of this flight.
@@ -168,8 +183,6 @@ public class Flight implements Comparable<Flight>{
 	 */
 	public void setNext(Flight n) {
 		next = n;
-		
-		System.out.println("   Setted next of " +this+ " to " + n);
 	}
 	
 	/**
@@ -178,7 +191,18 @@ public class Flight implements Comparable<Flight>{
 	 */ 
 	public void setPrev(Flight p) {
 		prev = p;
-		System.out.println("   Setted prev of " +this+ " to " +p);
+	}
+	
+	public Flight clone() {
+		return new Flight(airline, flightNumber, destination, boardingGate, date);
+	}
+	
+	public boolean equals(Flight f) {
+		boolean r = false;
+		if(f.getAirline().equals(airline) && f.getDestination().equals(destination) && f.getFlightNumber().equals(flightNumber) && f.getBoardingGate() == boardingGate && f.getDate().equals(date)) {
+			r = true;
+		}
+		return r;
 	}
 	
 	@Override

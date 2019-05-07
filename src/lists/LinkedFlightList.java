@@ -22,15 +22,14 @@ public class LinkedFlightList implements List<Flight>{
 	public void add(Flight element) {
 		if(first==null) {
 			first = element;
-			first.setNext(element);
-			first.setPrev(element);
 		}else {
-			Flight last = first.getPrev();
-			element.setNext(first);
+			Flight last = first;
+			while(last.getNext() != null) {
+				last = last.getNext();
+				}
 			element.setPrev(last);
 			last.setNext(element);
-			first.setPrev(element);
-		}
+			}
 	}
 
 	/**
@@ -51,7 +50,7 @@ public class LinkedFlightList implements List<Flight>{
 		Flight current = first;
 		if(current!=null) {
 			totalElements=1;
-			while(current.getNext() != first) {
+			while(current.getNext() != null) {
 				current = current.getNext();
 				totalElements++;
 			}
@@ -75,7 +74,7 @@ public class LinkedFlightList implements List<Flight>{
 		}
 		return found;
 	}
-
+	
 	/**
 	 * Sets the Flight located in the given index to the one in the parameter, and updates the next and prev fields of the next and previous elements of the replaced element.
 	 */
@@ -87,13 +86,22 @@ public class LinkedFlightList implements List<Flight>{
 		Flight found = first;
 		int currentIndex = 0;
 		while(currentIndex < index) {
-			currentIndex++;
 			found  = found.getNext();
+			currentIndex++;
 		}
-		element.setPrev(found.getPrev());
-		found.getPrev().setNext(element);
-		element.setNext(found.getNext());
-		found.getNext().setPrev(element);
+		if(found == first) {
+			first = element;
+		}
+		if(found.getNext() == null) {
+			found.getPrev().setNext(element);
+			element.setPrev(found.getPrev());
+		}else {
+			Flight prevNext = found.getNext();
+			element.setPrev(found);
+			element.setNext(prevNext);
+			found.setNext(element);
+			prevNext.setPrev(element);
+		}
 	}
 
 	/**
@@ -117,42 +125,60 @@ public class LinkedFlightList implements List<Flight>{
 	}
 	
 	/**
-	 * Swaps the position of two flights, and links it with their adjacent nodes.
+	 * Swaps the position of two adjacent flights, and links it with their adjacent nodes.
 	 * @param swapA First element to be swapped
 	 * @param swapB Second element to be swapped
 	 */
 	public void swap(Flight swapA, Flight swapB) {
-		Flight prevA = swapA.getPrev();
-		Flight nextB = swapB.getNext();
-		//Then link again, in the desired order.
-		prevA.setNext(swapB);
-		swapB.setPrev(prevA);
-		nextB.setPrev(swapA);
-		swapA.setNext(nextB);
-		swapB.setNext(swapA);
-		swapA.setPrev(swapB);
-		if(swapA == first) {
-			first = swapB;
+		if(swapB.getNext() != null) {
+			if(swapA.getPrev() != null) {
+				Flight prevA = swapA.getPrev();
+				Flight nextB = swapB.getNext();
+				prevA.setNext(swapB);
+				swapB.setNext(swapA);
+				swapA.setNext(nextB);
+				nextB.setPrev(swapA);
+				swapA.setPrev(swapB);
+				swapB.setPrev(prevA);
+			}else {
+				Flight nextB = swapB.getNext();
+				nextB.setPrev(swapA);
+				swapA.setPrev(swapB);
+				swapB.setPrev(null);
+				swapB.setNext(swapA);
+				swapA.setNext(nextB);
+				first = swapB;
+			}
+		}else {
+			if(swapA.getPrev() != null) {
+				Flight prevA = swapA.getPrev();
+				prevA.setNext(swapB);
+				swapB.setNext(swapA);
+				swapA.setNext(null);
+				swapA.setPrev(swapB);
+				swapB.setPrev(prevA);
+			}else {
+				swapB.setPrev(null);
+				swapA.setPrev(swapB);
+				swapB.setNext(swapA);
+				swapA.setNext(null);
+				first = swapB;
+			}
 		}
-		System.out.println("  Swapped "+swapA+" with "+swapB);
 	}
 
 	/**
 	 * Method used to segment a list into a smaller list containing only the elements in the first index to the last index, both given.
-	 * @deprecated Not used anywhere in the program, supposed to work with pagination's requirement but figured out a way to paginate without sub listing.
 	 */
-	@Override @Deprecated
+	@Override
 	public LinkedFlightList subList(int initIndex, int finalIndex) throws IndexOutOfBoundsException {
 		LinkedFlightList toReturn = null;
 		if(initIndex != finalIndex) {
 			if(initIndex < finalIndex) {
 				toReturn = new LinkedFlightList();
 				while(initIndex < finalIndex) {
-					System.out.println("---\nIs error here?\n" + this.printList());
-					Flight toAdd = get(initIndex);
-					System.out.println("---\nOr here?\n" + this.printList());
+					Flight toAdd = get(initIndex).clone();
 					toReturn.add(toAdd);
-					System.out.println("---\nOr maybe here?\n" + this.printList());
 					initIndex++;
 				}
 				
@@ -173,16 +199,30 @@ public class LinkedFlightList implements List<Flight>{
 		return first;
 	}
 	
+	/**
+	 * Returns the list's tail, AKA last element
+	 */
+	public Flight getLast() {
+		Flight ret = first;
+		while(ret!=null && ret.getNext()!= null) {
+			ret = ret.getNext();
+		}
+		return ret;
+	}
+	
 	public String printList() {
 		String msg = "";
 		Flight current = first;
 		msg = current.toString();
-		while(current.getNext()!=first) {
+		while(current.getNext()!=null) {
 			current = current.getNext();
 			msg += "\n"+current.toString();
 		}
 		return msg;
 	}
 	
+	public Flight getUnlinked(int index) {
+		return get(index).clone();
+	}
 }
 
