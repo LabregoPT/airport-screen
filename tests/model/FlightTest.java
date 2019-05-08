@@ -13,7 +13,7 @@ class FlightTest {
 	}
 	
 	@Test
-	void test1() {
+	void constructosTest() {
 		setUpStage2();
 		tested = new Flight("Copa Airlines", "C80192", "Paris", 2);
 		assertNotNull(tested, "Failed to instantiate class.");

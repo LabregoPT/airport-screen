@@ -52,7 +52,7 @@ class AirportTest {
 	 * Sets up the stage 7, one with 100 already randomly generated flights.
 	 * @throws IOException
 	 */
-	void setUpStage7() throws IOException {
+	private void setUpStage7() throws IOException {
 		tested = new Airport();
 		tested.generateFlights(100);
 	}
@@ -61,7 +61,7 @@ class AirportTest {
 	 * Tests the constructor method.
 	 */
 	@Test
-	void testConstructor() {
+	public void testConstructor() {
 		setUpStage3();
 		tested = new Airport();
 		assertNotNull(tested, "Failed to instantiate class");
@@ -71,7 +71,7 @@ class AirportTest {
 	 * Tests the program capacity to generate unique flight numbers
 	 */
 	@Test
-	void testUniqueNumber() {
+	public void testUniqueNumber() {
 		setUpStage4();
 		try{
 			tested.generateFlights(10);
@@ -94,7 +94,7 @@ class AirportTest {
 	 * Searches for a single flight or none at all given a searching criteria.
 	 */
 	@Test
-	void testSearch() {
+	public void testSearch() {
 		List<Flight> found = null;
 
 		setUpStage6();
@@ -139,9 +139,9 @@ class AirportTest {
 	 * Tests the sorting methods.
 	 */
 	@Test
-	void testSorting() {
+	public void testSorting() {
 		try {
-			setUpStage6();
+			setUpStage7();
 			tested.sortTime();
 			for(int i = 0; i<tested.getFlights().size()-1; i++) {
 				Flight current = tested.getFlights().get(i).clone();
