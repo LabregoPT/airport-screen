@@ -34,17 +34,18 @@ class AirportTest {
 	}
 	
 	void setUpStage7() throws IOException {
-		tested.generateFlights(100);
+		tested = new Airport();
+		tested.generateFlights(5);
 	}
 	
-	@Test
+//	@Test
 	void testConstructor() {
 		setUpStage3();
 		tested = new Airport();
 		assertNotNull(tested, "Failed to instantiate class");
 	}
 	
-	@Test
+//	@Test
 	void testUniqueNumber() {
 		setUpStage4();
 		try{
@@ -64,7 +65,7 @@ class AirportTest {
 		
 	}
 
-	@Test
+//	@Test
 	void testSearch() {
 		List<Flight> found = null;
 
@@ -87,9 +88,10 @@ class AirportTest {
 		assertTrue(found.isEmpty(), "Found incorrect values.");
 		
 		setUpStage6();
+		Flight preSort = tested.getFlights().get(1).clone();
 		found = tested.search(Sortings.FLIGHT_NUMBER, "C80192");
 		assertEquals(1, found.size(), "Found more than 1 flight");
-		assertTrue(found.get(0).clone().equals(tested.getFlights().get(1).clone()));
+		assertTrue(found.get(0).clone().equals(preSort), "Flight found is not the correct one");
 		
 		setUpStage6();
 		found = tested.search(Sortings.FLIGHT_NUMBER, "D80912");
@@ -105,11 +107,58 @@ class AirportTest {
 		assertTrue(found.isEmpty(), "Found incorrect values.");
 	}
 	
+	@Test
 	void testSorting() {
 		try {
-			setUpStage7();
+			setUpStage6();
+			tested.sortTime();
+			for(int i = 0; i<tested.getFlights().size()-1; i++) {
+				Flight current = tested.getFlights().get(i).clone();
+				if(current.compareTo(tested.getFlights().get(i+1).clone())>0) {
+					fail("Error sorting");
+				}
+			}
+			System.out.println("---Successful time sorting");
+			
+			tested.sortAirline();
+			for(int i = 0; i<tested.getFlights().size()-1; i++) {
+				Flight current = tested.getFlights().get(i).clone();
+				if(current.compareToAirline(tested.getFlights().get(i+1).clone())>0) {
+					fail("Error sorting");
+				}
+			}
+			System.out.println("---Successful airline sorting");
+			
+			tested.sortDestination();
+			for(int i = 0; i<tested.getFlights().size()-1; i++) {
+				Flight current = tested.getFlights().get(i).clone();
+				if(current.compareToDestination(tested.getFlights().get(i+1).clone())>0) {
+					fail("Error sorting");
+				}
+			}
+			System.out.println("---Successful destination sorting");
+			
+			tested.sortFN();
+			for(int i = 0; i<tested.getFlights().size()-1; i++) {
+				Flight current = tested.getFlights().get(i).clone();
+				if(current.compareToFN(tested.getFlights().get(i+1).clone())>0) {
+					fail("Error sorting");
+				}
+			}
+			System.out.println("---Successful FN sorting");
+			
+			tested.sortBG();
+			for(int i = 0; i<tested.getFlights().size()-1; i++) {
+				Flight current = tested.getFlights().get(i).clone();
+				if(current.compareToBG(tested.getFlights().get(i+1).clone())>0) {
+					fail("Error sorting");
+				}
+			}
+			System.out.println("---Successful BG sorting");
+			
 			
 		}catch(Exception e) {
+			e.printStackTrace();
 			fail();
 		}
 	}

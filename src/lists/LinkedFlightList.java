@@ -83,24 +83,34 @@ public class LinkedFlightList implements List<Flight>{
 		if(index < 0 || index >= size()) {
 			throw new IndexOutOfBoundsException("Tried to set " + element + " in index " + index+ "when size is " + size());
 		}
-		Flight found = first;
-		int currentIndex = 0;
-		while(currentIndex < index) {
-			found  = found.getNext();
-			currentIndex++;
-		}
-		if(found == first) {
-			first = element;
-		}
-		if(found.getNext() == null) {
-			found.getPrev().setNext(element);
-			element.setPrev(found.getPrev());
+		if(index == 0) {
+			if(first == null) {
+				first = element;
+			}else {
+				Flight next = first.getNext();
+				next.setPrev(element);
+				element.setNext(next);
+				first = element;
+			}
 		}else {
-			Flight prevNext = found.getNext();
-			element.setPrev(found);
-			element.setNext(prevNext);
-			found.setNext(element);
-			prevNext.setPrev(element);
+			Flight found = first;
+			int currentIndex = 0;
+			while(currentIndex < index) {
+				currentIndex++;
+				found  = found.getNext();
+			}
+			if(found.getNext() != null) {
+				Flight prev = found.getPrev();
+				Flight next = found.getNext();
+				prev.setNext(element);
+				next.setPrev(element);
+				element.setNext(next);
+				element.setPrev(prev);
+			}else {
+				Flight prev = found.getPrev();
+				element.setPrev(prev);
+				prev.setNext(element);
+			}
 		}
 	}
 
@@ -213,10 +223,14 @@ public class LinkedFlightList implements List<Flight>{
 	public String printList() {
 		String msg = "";
 		Flight current = first;
-		msg = current.toString();
-		while(current.getNext()!=null) {
-			current = current.getNext();
-			msg += "\n"+current.toString();
+		if(current == null) {
+			msg = "Empty";
+		}else {
+			msg = current.toString();
+			while(current.getNext()!=null) {
+				current = current.getNext();
+				msg += "\n"+current.toString();
+			}	
 		}
 		return msg;
 	}

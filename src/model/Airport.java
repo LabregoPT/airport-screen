@@ -170,10 +170,10 @@ public class Airport{
 		int length = flights.size();
 		for (int i = 0; i < length-1; i++) {
 			for (int j = 0; j < length-i-1 ; j++) {
-				Flight current = flights.get(j);
-				Flight next = flights.get(j+1);
+				Flight current = flights.get(j).clone();
+				Flight next = flights.get(j+1).clone();
 				if(current.compareTo(next) > 0) {
-					Flight temp = flights.get(j);
+					Flight temp = flights.get(j).clone();
 					flights.set(j, next);
 					flights.set(j+1, temp);
 				}
@@ -190,7 +190,7 @@ public class Airport{
 			Flight toInsert = flights.get(i).clone();
 			boolean ended = false;
 			for(int j = i; j>0 && !ended; j--) {
-				Flight current = flights.get(j-1);
+				Flight current = flights.get(j-1).clone();
 				if(current.compareToAirline(toInsert) > 0) {
 					flights.set(j, current);
 					flights.set(j-1, toInsert);
@@ -209,8 +209,8 @@ public class Airport{
 		for (int i = 0; i < length-1; i++) {
 			int min = i;
 			for (int j = i+1; j < length; j++) {
-				Flight minimum = flights.get(min);
-				Flight current = flights.get(j);
+				Flight minimum = flights.get(min).clone();
+				Flight current = flights.get(j).clone();
 				if(minimum.compareToDestination(current)>0) {
 					min = j;
 				}
@@ -241,8 +241,8 @@ public class Airport{
 		for (int i = 0; i < length-1; i++) {
 			int min = i;
 			for (int j = i+1; j < length; j++) {
-				Flight minimum = flights.get(min);
-				Flight current = flights.get(j);
+				Flight minimum = flights.get(min).clone();
+				Flight current = flights.get(j).clone();
 				if(minimum.compareToBG(current)>0) {
 					min = j;
 				}
@@ -353,18 +353,23 @@ public class Airport{
 	 * @return Flights coinciding with the given Flight number.
 	 */
 	public List<Flight> searchFN(String fn){
-		LinkedFlightList found = new LinkedFlightList();
-		Comparator<Flight> searcher = new Comparator<Flight>() {
-			public int compare(Flight o1, Flight o2) {
-				return o1.compareToFN(o2);
-			}
-		};
+		sortFN();
+		List<Flight> found = new LinkedFlightList();
 		Flight searched = new Flight("", fn, "", 0);
 		int length = flights.size();
-		for(int i = 0; i<length; i++) {
-			Flight current = flights.get(i).clone();
-			if(searcher.compare(current, searched) == 0) {
-				found.add(current);
+		int low = 0;
+		int high = length-1;
+		boolean finished = false;
+		while(low <= high && !finished) {
+			int mid = (high+low)/2;
+			Flight foundF = flights.get(mid).clone();
+			if(searched.compareToFN(foundF) == 0) {
+				found.add(foundF);
+				finished = true;
+			}else if(searched.compareToFN(foundF) < 0) {
+				high = mid-1;
+			}else if(searched.compareToFN(foundF) > 0) {
+				low = mid+1;
 			}
 		}
 		return found;
