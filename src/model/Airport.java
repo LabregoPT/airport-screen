@@ -67,8 +67,8 @@ public class Airport{
 			flights.add(f);
 			i++;
 		}
-//		setSortingType(Sortings.TIME);
-//		sort();
+		setSortingType(Sortings.TIME);
+		sort();
 	}
 	
 	/**

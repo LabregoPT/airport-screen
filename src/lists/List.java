@@ -57,6 +57,10 @@ public interface List<E extends Object> {
 	 */
 	public List<E> subList(int initIndex, int finalIndex) throws IndexOutOfBoundsException;
 	
+	/**
+	 * Returns a String object with a String representation of every element in this list.
+	 * @return A String object with a representation of every element in this list.
+	 */
 	public String printList();
 	
 }

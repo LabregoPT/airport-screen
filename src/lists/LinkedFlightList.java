@@ -220,6 +220,9 @@ public class LinkedFlightList implements List<Flight>{
 		return ret;
 	}
 	
+	/**
+	 * Prints the Flights' information from head to tail of the list.
+	 */
 	public String printList() {
 		String msg = "";
 		Flight current = first;
@@ -235,8 +238,5 @@ public class LinkedFlightList implements List<Flight>{
 		return msg;
 	}
 	
-	public Flight getUnlinked(int index) {
-		return get(index).clone();
-	}
 }
 
