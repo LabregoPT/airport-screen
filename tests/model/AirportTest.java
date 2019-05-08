@@ -7,18 +7,33 @@ import lists.*;
 
 import org.junit.jupiter.api.Test;
 
+/**
+ * A test case to test the different methods in class Airport.
+ * @author Jhon Edward Mora - Universidad ICESI - A00355710
+ *
+ */
 class AirportTest {
 	
+	/**Relation with the tested class.*/
 	private Airport tested;
 	
+	/**
+	 * Sets up the stage 3, an empty one
+	 */
 	private void setUpStage3() {
 		tested = null;
 	}
 	
+	/**
+	 * Sets up the stage 4, one with an already generated flight.
+	 */
 	private void setUpStage4() {
 		tested = new Airport();
 	}
 	
+	/**
+	 * Sets up the stage 6, one with 4 already generated flights.
+	 */
 	private void setUpStage6() {
 		Flight f1 = new Flight("Emirates", "E90193", "Los Angeles", 1);
 		Flight f2 = new Flight("Copa Airlines", "C80192", "Paris", 2);
@@ -33,19 +48,29 @@ class AirportTest {
 		tested.setFlights(list);
 	}
 	
+	/**
+	 * Sets up the stage 7, one with 100 already randomly generated flights.
+	 * @throws IOException
+	 */
 	void setUpStage7() throws IOException {
 		tested = new Airport();
-		tested.generateFlights(5);
+		tested.generateFlights(100);
 	}
 	
-//	@Test
+	/**
+	 * Tests the constructor method.
+	 */
+	@Test
 	void testConstructor() {
 		setUpStage3();
 		tested = new Airport();
 		assertNotNull(tested, "Failed to instantiate class");
 	}
 	
-//	@Test
+	/**
+	 * Tests the program capacity to generate unique flight numbers
+	 */
+	@Test
 	void testUniqueNumber() {
 		setUpStage4();
 		try{
@@ -65,7 +90,10 @@ class AirportTest {
 		
 	}
 
-//	@Test
+	/**
+	 * Searches for a single flight or none at all given a searching criteria.
+	 */
+	@Test
 	void testSearch() {
 		List<Flight> found = null;
 
@@ -107,6 +135,9 @@ class AirportTest {
 		assertTrue(found.isEmpty(), "Found incorrect values.");
 	}
 	
+	/**
+	 * Tests the sorting methods.
+	 */
 	@Test
 	void testSorting() {
 		try {
@@ -118,7 +149,6 @@ class AirportTest {
 					fail("Error sorting");
 				}
 			}
-			System.out.println("---Successful time sorting");
 			
 			tested.sortAirline();
 			for(int i = 0; i<tested.getFlights().size()-1; i++) {
@@ -127,7 +157,6 @@ class AirportTest {
 					fail("Error sorting");
 				}
 			}
-			System.out.println("---Successful airline sorting");
 			
 			tested.sortDestination();
 			for(int i = 0; i<tested.getFlights().size()-1; i++) {
@@ -136,7 +165,6 @@ class AirportTest {
 					fail("Error sorting");
 				}
 			}
-			System.out.println("---Successful destination sorting");
 			
 			tested.sortFN();
 			for(int i = 0; i<tested.getFlights().size()-1; i++) {
@@ -145,7 +173,6 @@ class AirportTest {
 					fail("Error sorting");
 				}
 			}
-			System.out.println("---Successful FN sorting");
 			
 			tested.sortBG();
 			for(int i = 0; i<tested.getFlights().size()-1; i++) {
@@ -154,7 +181,6 @@ class AirportTest {
 					fail("Error sorting");
 				}
 			}
-			System.out.println("---Successful BG sorting");
 			
 			
 		}catch(Exception e) {

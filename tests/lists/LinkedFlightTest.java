@@ -8,14 +8,26 @@ import java.util.Random;
 
 import org.junit.jupiter.api.Test;
 
+/**
+ * A class to test the LinkedFlightList methods.
+ * @author Jhon Edward Mora - Universidad ICESI - A00355710
+ * @version 1.0 May 2019
+ */
 class LinkedFlightTest {
 
+	/**Relation with the tested class*/
 	private LinkedFlightList tested;
 	
+	/**
+	 * Sets up the stage number 5, an empty one
+	 */
 	public void setUpStage5() {
 		tested = null;
 	}
 	
+	/**
+	 * Sets up the stage number 6, one with already generated flights.
+	 */
 	public void setUpStage6() {
 		tested = new LinkedFlightList();
 		Flight first = new Flight("Avianca", "A00319", "Belgium", 9); 
@@ -25,6 +37,10 @@ class LinkedFlightTest {
 		tested.add(first);tested.add(second);tested.add(third);tested.add(fourth);
 	}
 	
+	/**
+	 * Tests the adding methods.
+	 * @throws IOException When there's a problem reading the files.
+	 */
 	@Test
 	void listAddTest() throws IOException {
 		tested = new LinkedFlightList();
@@ -57,6 +73,10 @@ class LinkedFlightTest {
 		}
 	}
 	
+	/**
+	 * Tests the program's capacity to retrieve information about elements in the list.
+	 * @throws IOException When there's a problem reading the files.
+	 */
 	@Test
 	public void listInfoTest() throws IOException {
 		setUpStage5();
@@ -85,6 +105,9 @@ class LinkedFlightTest {
 		
 	}
 	
+	/**
+	 * Tests the implemented List.sort() method.
+	 */
 	@Test
 	public void sortingTest() {
 		setUpStage6();
@@ -103,6 +126,9 @@ class LinkedFlightTest {
 		}
 	}
 	
+	/**
+	 * Tests the sublist method
+	 */
 	@Test
 	public void subListTest() {
 		setUpStage6();
@@ -112,6 +138,11 @@ class LinkedFlightTest {
 		assertTrue(toTest.get(1).clone().equals(tested.get(1).clone()), "Failed to add first element");
 	}
 	
+	/**
+	 * Auxiliary method for different methods
+	 * @return a randomly generated flight.
+	 * @throws IOException When there's a problem reading the files.
+	 */
 	public Flight generateFlight() throws IOException {
 		Random rnd = new Random();
 		Airport dataGiver = new Airport();
