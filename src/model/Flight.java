@@ -23,7 +23,7 @@ public class Flight implements Comparable<Flight>{
 	
 	//Relations
 	
-	/**The date this flight is done.*/
+	/**The date this flight is due.*/
 	private Date date;
 	
 	/**The next flight in the list*/
@@ -50,7 +50,7 @@ public class Flight implements Comparable<Flight>{
 	}
 
 	/**
-	 * Constructor method. Initializes an instance of the Flight class.
+	 * Constructor method. Initializes an instance of the Flight class with a given date.
 	 * @param al The flight's airline
 	 * @param fn The flight's flight number
 	 * @param d The flight's destination
@@ -193,10 +193,18 @@ public class Flight implements Comparable<Flight>{
 		prev = p;
 	}
 	
+	/**
+	 * Returns an unlinked flight with the same information of this flight.
+	 */
 	public Flight clone() {
 		return new Flight(airline, flightNumber, destination, boardingGate, date);
 	}
 	
+	/**
+	 * States if this flight has equal values to a given Flight.
+	 * @param f The given flight.
+	 * @return True if every data value (airline, destination, flight number, boarding gate and date) are equal to the given date.
+	 */
 	public boolean equals(Flight f) {
 		boolean r = false;
 		if(f.getAirline().equals(airline) && f.getDestination().equals(destination) && f.getFlightNumber().equals(flightNumber) && f.getBoardingGate() == boardingGate && f.getDate().equals(date)) {
@@ -205,6 +213,9 @@ public class Flight implements Comparable<Flight>{
 		return r;
 	}
 	
+	/**
+	 * For testing purposes.
+	 */
 	@Override
 	public String toString() {
 		return String.format("%s-%s-%s-%d - %s", airline, flightNumber, destination, boardingGate, date.toString());
